@@ -8,4 +8,9 @@ RUN wget -c "https://centos7.iuscommunity.org/ius-release.rpm" -O /tmp/ius-relea
 RUN rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
 RUN rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
 RUN yum-config-manager --enable elrepo-extras elrepo-kernel && yum makecache && yum -y update
-RUN yum groupinstall -y “Development Tools”
+RUN yum groups mark install "Development Tools" && yum groups mark convert "Development Tools" && yum groupinstall -y "Development Tools" 
+RUN yum remove -y `rpm -qa git\*` subversion
+RUN yum install -y openssl-devel.x86_64 bzip2-devel.x86_64x readline-devel.x86_64 sqlite-devel.x86_64 tk-devel.x86_64 libpng-devel.x86_64 freetype-devel.x86_64 curl.x86_64 git2u.x86_64
+RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+ADD bashrc /headless/.bashrc
+RUN source ~/.bashrc && pyenv install 3.6.3 && pyenv global 3.6.3
