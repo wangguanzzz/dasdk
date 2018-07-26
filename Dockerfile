@@ -14,3 +14,9 @@ RUN yum install -y openssl-devel.x86_64 bzip2-devel.x86_64x readline-devel.x86_6
 RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 ADD bashrc /headless/.bashrc
 RUN source ~/.bashrc && pyenv install 3.6.3 && pyenv global 3.6.3
+RUN yum install -y java-1.8.0-openjdk-devel && yum clean all
+RUN wget -c "https://downloads.lightbend.com/scala/2.12.6/scala-2.12.6.rpm" -O /tmp/scala-2.12.6.rpm && sudo rpm -Uvh /tmp/scala-2.12.6.rpm
+RUN curl  https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo
+RUN yum makecache
+RUN yum install -y sbt
+
